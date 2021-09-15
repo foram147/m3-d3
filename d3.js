@@ -1,3 +1,5 @@
+let grid = document.getElementById("myGrid");
+
 function getFirstImage() {
   let images;
   fetch("https://api.pexels.com/v1/search?query=baby", {
@@ -11,15 +13,16 @@ function getFirstImage() {
       return Response.json();
     })
     .then((user) => {
-      displayFirstImage(user);
+      console.log(user);
+      displayImage(user);
     })
     .catch((err) => {
       console.log(err);
     });
 }
 
-function displayFirstImage(user) {
-  let grid = document.getElementById("myGrid");
+function displayImage(user) {
+  grid === "";
   for (let photo of user.photos) {
     // generates 12 cards
     grid.innerHTML += `<div class="col">
@@ -31,9 +34,7 @@ function displayFirstImage(user) {
               lead-in to additional content. This content is a little bit
               longer.
             </p>
-            <div
-              class="d-flex justify-content-between align-items-center"
-            >
+            <div class="d-flex justify-content-between align-items-center" >
               <div class="btn-group">
                 <button
                   type="button"
@@ -48,17 +49,19 @@ function displayFirstImage(user) {
                   Edit
                 </button>
               </div>
-              <small class="text-muted">9 mins</small>
+              <small id = "strings"class="text-muted">${photo.id}</small>
             </div>
           </div>
         </div>
       </div>`;
   }
   grid
-    .querySelectorAll(".btn.btn-outline-secondry:nth-child(2)")
+    .querySelectorAll(".btn.btn-outline-secondary:nth-child(2)") // finds the second button of type outline-secondary
     .forEach((btn) => {
-      btn.innerText = "Hide";
-      btn.onclick = (event) => event.currentTarget.closest(".col").remove();
+      btn.innerText = "Hide"; //changes the inner text
+      btn.onclick = (event) =>
+        // event.currentTarget.parentNode.parentNode.parentNode.parentNode.parentNode.remove(); // navigating upward in the dom tree to find the .col element and remove it
+        event.currentTarget.closest(".col").remove(); // modern approach: is going to find the closest element matching the condition
     });
 }
 
@@ -75,7 +78,7 @@ function getSecondImage() {
       return Response.json();
     })
     .then((user) => {
-      displaySecondImage(user);
+      displayImage(user);
     })
     .catch((err) => {
       console.log(err);
